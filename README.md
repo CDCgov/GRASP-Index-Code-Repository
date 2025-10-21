@@ -10,10 +10,6 @@ Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to
 
 ---
 
-**readme template notes - delete template notes prior to publishing.** 
-
-*Template instructions are italicized and should be deleted prior to publishing. This template outlines both required and suggested sections to include in your readme file. Some content can be edited as needed. Refer to the table below for rules on content editing.* 
-
 | Section           | Required | Editable |
 | :---------------- | :------: | :---: |
 | Title             |   True   | Yes   |
@@ -28,7 +24,7 @@ Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to
 
 *Note: GitHub will automatically generate a table of contents in rendered markdown files based on section headings. You can view the table of contents for a README file by clicking the menu icon at the top left of the rendered page.*
 
-# Title
+# SVI Open Source Code
 
 *Provide a brief, descriptive title of your project. It is recommended to verify that the name of your project is not already in use. Retain the disclaimer and metadata tags listed below.* 
 
