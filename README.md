@@ -10,7 +10,7 @@ Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to
 
 ## Overview
 
-# CDC/ATSDR SVI 2022 Open Source R Code
+### CDC/ATSDR SVI 2022 Open Source R Code
 
 Authored by:
 Phong Le, Public Health Data Scientist
