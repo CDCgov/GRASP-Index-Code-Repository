@@ -6,7 +6,7 @@
 # Reviewers/ Contributors: 
 # Phong Le, Public Health Data Scientist
 # Sarah Rockhill, Geospatial Epidemiologist, srockhill@cdc.gov
-# Frank Curriero, Geospatial Consultant, fcurriero@cdc.gov
+# Frank Curriero, Geospatial Consultant
 # Ryan Davis, Geospatial Consultant
 # Elizabeth Pembleton, epembleton@cdc.gov
 
@@ -377,3 +377,4 @@ svi_out <- svi_2022(
   state      = state,
   write_csv_path = write_csv_path
 )
+
