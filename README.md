@@ -24,41 +24,61 @@ Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to
 
 *Note: GitHub will automatically generate a table of contents in rendered markdown files based on section headings. You can view the table of contents for a README file by clicking the menu icon at the top left of the rendered page.*
 
-# SVI Open Source Code
+# CDC/ATSDR SVI 2022 ----
 
 # Authored by: 
-# Phong Le, Public Health Data Scientist, pyv8@cdc.gov
+# Phong Le, Public Health Data Scientist, ple@cdc.gov
 
 # Reviewers/ Contributors: 
 # Phong Le, Public Health Data Scientist, pyv8@cdc.gov
 # Sarah Rockhill, Geospatial Epidemiologist, ppk8@cdc.gov
-# Isabelle Flinn, System Analyst, uaa4@cdc.gov
+# Frank Curriero, Geospatial Consultant, fgc0@cdc.gov
 
-# What is CDC/ATSDR Social Vulnerability Index?
+## CDC/ATSDR Social Vulnerability Index ----
+# Social vulnerability refers to the demographic and socioeconomic factors (such as poverty, lack of access to transportation, and crowded 
+# housing) that adversely affect communities that encounter hazards and other community-level stressors. These stressors can include natural 
+# or human-caused disasters (such as tornadoes or chemical spills) or disease outbreaks (such as COVID-19). For more info, access the link below.
+# https://www.atsdr.cdc.gov/place-health/php/svi/index.html
 
-# ATSDR’s Geospatial Research, Analysis, & Services Program (GRASP) created the Centers for Disease Control and  Prevention and Agency for Toxic Substances and Disease Registry Social Vulnerability Index (CDC/ATSDR SVI or simply SVI, hereafter) to help public health officials and emergency response planners identify and map the communities that will most likely need support before, during, and after a hazardous event. SVI indicates the relative vulnerability of every U.S. Census tract. Census tracts are subdivisions of counties for  which the Census collects statistical data. SVI ranks the tracts on 16 social factors, including unemployment,  racial and ethnic minority status, and disability, and further groups them into four related themes. Thus, each tract receives a ranking for each Census variable and for each of the four themes as well as an overall ranking. In addition to tract-level rankings, SVI 2010, 2014, 2016, 2018, and 2020 also have corresponding rankings at the county level. Notes below that describe “tract” methods also refer to county methods.
+## Changes in SVI over time ----
+# The CDC/ATSDR SVI has changed four times over the years as can be seen in the timeline linked below:
+# https://www.atsdr.cdc.gov/place-health/php/svi/index.html#cdc_generic_section_4-changes-over-time
 
-# What is new in the SVI 2020 updates?
+## SVI Methodology ----
+# Please refer to the SVI documentation linked below which is stratified by year. 
+# https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html
 
-# As our understanding of social vulnerability evolves over time, SVI must evolve as well. Beginning with SVI 2020, we made modifications to SVI theme names, individual SVI indicators, and adjunct data. We modified the name of Theme 2 from Household Composition & Disability to Household Characteristics, and we modified the name of Theme 3 from Minority Status & Language to Racial & Ethnic Minority Status. Within Theme 1 Socioeconomic Status, we modified the Below Poverty variable from the 100% federal poverty level to the 150% federal poverty level, considering the federal poverty line thresholds established for several federal health coverage policies.1 Similarly, we included a No Health Insurance variable in Theme 1 Socioeconomic Status as a lack of health insurance coverage is increasingly considered a marker of lower socioeconomic status and a barrier to healthcare access.2 Also, within Theme 1 Socioeconomic Status, we exchanged the Per Capita Income variable for Housing Cost Burden, which are households that spend 30% or more of annual income on housing costs. Recent studies have emphasized the importance of examining housing cost burden as opposed to per capita income as a better indicator of insufficient disposable income among households.3,4 Further, we moved the English Language Proficiency variable from Theme 3 Racial & Ethnic Minority Status to Theme 2 Household Characteristics because the ACS variables are based on language spoken at home and are better suited in the Household Characteristics theme. Additionally, although people in racial and ethnic minority groups are overall more likely to have limited English language proficiency than non-Hispanic whites, most (90.9%) are English language proficient.5 Thus, we moved the English Language Proficiency out of the Minority theme because it may have adversely affected the vulnerability ranking of communities in high minority areas of the country. Lastly, we included new adjunct variables: households without a computer with a broadband Internet subscription, and breakdowns of racial and ethnic minority populations. The coronavirus disease 2019 pandemic has underscored the importance of broadband Internet access as a social determinant of health, justifying the inclusion of data on the lack of broadband Internet access as an adjunct variable.6 While we aggregate all racial and ethnic minority persons in Theme 3 Racial & Ethnic Minority Status, we recognize that SVI users may be interested in its component populations. A thorough literature review and internal validation were conducted to finalize the construction of SVI 2020.
-
-# https://www.atsdr.cdc.gov/placeandhealth/svi/documentation/SVI_documentation_2020.html
-
-# Do I need a Census API key?
-
-# If you plan to run over 500 API requests in a day, you will need to have your own Census API key. A link to generate your own key is below. However, for most users, having you own Census API key is not necessary. 
-
+## Census API Key ----
+# If you plan to run over 500 API requests in a day, you will need to have your own Census API key. 
+# A link to generate your own key is below. 
+# However, for most users, having your own Census API key is not necessary. 
 # https://api.census.gov/data/key_signup.html
 
-# How do I navigate this script?
+## SVI R Code Output Differences ----
+# County level results are exactly the same as official CDC outputs. 
+# Tract level results are minimally different (within 0.0002) due to the different tracts recognized 
+# in the SVI calculation and the Census API. 
 
-# Please click on the outline button in the top right of your RStudio editor. There is an outline highlighting every step of the SVI calculation process for your convenience.
+## SVI Calculation Steps ----
+# 1. E Variables: Obtain estimates of the CDC/ATSDR SVI variables from the Census Bureau. 
+# 2. EP Variables: Obtain or derive percentages for the 16 CDC SVI variables. 
+# 3. EPL Variables: Rank the EP variables to get percentile rankings (or the CDC/ATSDR SVI rankings) for each of the 16 variables.
+# 4. SPL Variables: Sum the EPL variables by theme. 
+# 5. RPL Variables: Rank the theme-specific SPL variable. 
+# 6. Overall SPL Variable (SPL_THEMES): Sum the SPL variables from all four themes. 
+# 7. Overall RPL Variable (RPL_THEMES): Rank SPL_THEMES. This is the overall summary ranking variable. 
 
-# Do these methods create results that mirror the data provided on the CDC SVI portal exactly?
+## How to run the code ----
+# 1) Install required packages:
+#    install.packages(c("tidyverse", "tidycensus", "purrr"))
+# 2) Set your Census API key (optional):
+#    tidycensus::census_api_key("YOUR_KEY_HERE", install = TRUE)
+#    Then restart R (Session > Restart R).
+# 3) Choose settings in the "User settings" section below and run the script.
 
-# Any discrepancy between this output and what is provided through the official CDC SVI portal are due to rounding differences. Discrepancies have been determined to be minor and insignificant.
-
-# https://www.atsdr.cdc.gov/placeandhealth/svi/data_documentation_download.html
+# Missing value convention ----
+# The official SVI outputs use -999 to indicate a value is unavailable or not possible to compute.
+# In this script, -999 values are treated as missing for ranking.
 
 **Organization:** Name of CDC division, center, or office responsible for the code repo (e.g., ATSDR | GRASP).<br>
 **Contact Email:** Email for metadata or repository inquiries. Only use public email address (e.g,. do not include your CDC username). <br>
