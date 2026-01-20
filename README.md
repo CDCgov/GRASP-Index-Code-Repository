@@ -11,6 +11,7 @@ Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to
 ## Overview
 
 ### CDC/ATSDR SVI 2022 Open Source R Code
+This repository contains code used to create the 2022 Social Vulnerability Index (SVI) for U.S. census tracts and counties. 
 
 **Authored by**  
 Phong Le, Public Health Data Scientist  
