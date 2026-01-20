@@ -12,71 +12,91 @@ Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to
 
 ### CDC/ATSDR SVI 2022 Open Source R Code
 
-Authored by:
-Phong Le, Public Health Data Scientist
+**Authored by**  
+Phong Le, Public Health Data Scientist  
 
-Reviewers/ Contributors:
-Phong Le, Public Health Data Scientist
-Sarah Rockhill, Geospatial Epidemiologist, srockhill@cdc.gov
+**Reviewers / Contributors**  
+- Phong Le, Public Health Data Scientist  
+- Sarah Rockhill, Geospatial Epidemiologist, srockhill@cdc.gov  
+- Frank Curriero, Geospatial Consultant, fcurriero@cdc.gov  
+- Ryan Davis, Geospatial Consultant  
+- Elizabeth Pembleton, epembleton@cdc.gov  
 
-Frank Curriero, Geospatial Consultant, fcurriero@cdc.gov
+---
 
-Ryan Davis, Geospatial Consultant
-Elizabeth Pembleton, epembleton@cdc.gov
+### CDC/ATSDR Social Vulnerability Index
 
-CDC/ATSDR Social Vulnerability Index
-Please refer to the link below to learn more about SVI.
-https://www.atsdr.cdc.gov/placehealth/php/svi/index.html
+Please refer to the link below to learn more about SVI:  
+https://www.atsdr.cdc.gov/place-health/php/svi/index.html
 
-Changes in SVI over time
-The CDC/ATSDR SVI has changed four times over the years as can be seen in the timeline linked below:
-https://www.atsdr.cdc.gov/placehealth/php/svi/index.html#cdc_generic_section_4changesovertime
+---
 
-SVI Methodology
-Please refer to the SVI documentation linked below which is stratified by year.
-https://www.atsdr.cdc.gov/placehealth/php/svi/svidatadocumentationdownload.html
+### Changes in SVI Over Time
 
-Census API Key
-If you plan to run over 500 API requests in a day, you will need to have your own Census API key.
-A link to generate your own key is below.
-However, for most users, having your own Census API key is not necessary.
+The CDC/ATSDR SVI has changed four times over the years, as shown in the timeline below:  
+https://www.atsdr.cdc.gov/place-health/php/svi/index.html#cdc_generic_section_4-changes-over-time
+
+---
+
+### SVI Methodology
+
+Please refer to the SVI documentation linked below, stratified by year:  
+https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html
+
+---
+
+### Census API Key
+
+If you plan to run more than 500 API requests per day, you will need your own Census API key.  
+For most users, this is not required.
+
+Generate a key here:  
 https://api.census.gov/data/key_signup.html
 
-SVI R Code Output Differences
-County level results are exactly the same as official CDC outputs.
-Tract level results are minimally different (within 0.0002) due to the different tracts recognized
-in the SVI calculation and the Census API.
+---
 
-SVI Calculation Steps
+### SVI R Code Output Differences
 
-E Variables: Obtain estimates of the CDC/ATSDR SVI variables from the Census Bureau.
+- County-level results match official CDC outputs exactly  
+- Tract-level results may differ minimally (within 0.0002) due to tract definitions used by the Census API
 
-EP Variables: Obtain or derive percentages for the 16 CDC SVI variables.
+---
 
-EPL Variables: Rank the EP variables to get percentile rankings (or the CDC/ATSDR SVI rankings) for each of the 16 variables.
+### SVI Calculation Steps
 
-SPL Variables: Sum the EPL variables by theme.
+1. **E Variables** – Obtain estimates of CDC/ATSDR SVI variables from the Census Bureau  
+2. **EP Variables** – Derive percentages for the 16 CDC SVI variables  
+3. **EPL Variables** – Rank EP variables to obtain percentile rankings  
+4. **SPL Variables** – Sum EPL variables by theme  
+5. **RPL Variables** – Rank theme-specific SPL variables  
+6. **Overall SPL (SPL_THEMES)** – Sum SPL values across all four themes  
+7. **Overall RPL (RPL_THEMES)** – Rank SPL_THEMES (overall SVI ranking)
 
-RPL Variables: Rank the themespecific SPL variable.
+---
 
-Overall SPL Variable (SPL_THEMES): Sum the SPL variables from all four themes.
+### How to Run the Code
 
-Overall RPL Variable (RPL_THEMES): Rank SPL_THEMES. This is the overall summary ranking variable.
-
-How to run the code
-
-Install required packages:
+**Install required packages:**
+```r
 install.packages(c("tidyverse", "tidycensus", "purrr"))
+```
 
-Set your Census API key (optional):
+**Set your Census API key (optional):**
+```r
 tidycensus::census_api_key("YOUR_KEY_HERE", install = TRUE)
-Then restart R (Session > Restart R).
+```
 
-Choose settings in the "User settings" section below and run the script.
+Then restart R (**Session → Restart R**).
 
-Missing value convention
-The official SVI outputs use -999 to indicate a value is unavailable or not possible to compute.
-In this script, -999 values are treated as missing for ranking.
+Choose settings in the **User settings** section of the script and run it.
+
+---
+
+### Missing Value Convention
+
+The official SVI outputs use `-999` to indicate values that are unavailable or cannot be computed.  
+In this script, `-999` values are treated as missing during ranking.
+
 
 ## Citation
 
