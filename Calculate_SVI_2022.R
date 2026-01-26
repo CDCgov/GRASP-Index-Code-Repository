@@ -69,7 +69,8 @@ geography  <- "county"           # "tract" or "county", this code does not yet s
 rank_scope <- "us"              # "us" or "state"
 state      <- NULL              # If rank_scope == "state", set ONE state abbreviation (e.g., "IL")
                                 # Refer to this list if needed: https://www.faa.gov/air_traffic/publications/atpubs/cnt_html/appendix_a.html
-write_csv_path <- NULL   # Name and path of output file. Set to NULL to skip writing. 
+write_csv_path <- NULL      # Path of output file. NULL will write to current working directory.
+out_file_name <- NULL       # Name of output file. Include file extension (.csv)
 
 # Main function ----
 svi_2022 <- function(
@@ -363,10 +364,21 @@ svi_2022 <- function(
       starts_with("RPL_")
     )
 
-  if (!is.null(write_csv_path) && nzchar(write_csv_path)) {
-    write.csv(svi_out, write_csv_path, row.names = FALSE)
+  if (!is.null(out_file_name) && nzchar(out_file_name)) {
+    
+    if (!grepl("\\.csv$", out_file_name, ignore.case = TRUE)) {
+      stop("out_file_name must include a.csv file extension.")
+    }
+    
+    out <- if (is.null(write_csv_path) || !nzchar(write_csv_path)) {
+      file.path(getwd(), out_file_name)
+    } else {
+      file.path(write_csv_path, out_file_name)
+    }
+    
+    write.csv(svi_out, out, row.names = FALSE)
   }
-
+  
   svi_out
 }
 

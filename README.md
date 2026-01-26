@@ -8,9 +8,13 @@ GRASP leads the application of geospatial science, data, analysis, technology, a
 
 Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to learn more about our work.
 
+# CDC/ATSDR SVI 2022 Open Source R Code
+
+**General disclaimer** This repository was created for use by CDC programs to collaborate on public health related projects in support of the CDC mission. GitHub is not hosted by CDC, but is a third-party website used by CDC and its partners to share information and collaborate on software. CDC use of GitHub does not imply endorsement of any service, product, or enterprise.
+
 ## Overview
 
-### CDC/ATSDR SVI 2022 Open Source R Code
+This repository contains code used to create the 2022 Social Vulnerability Index (SVI) for U.S. census tracts and counties. 
 
 **Authored by**  
 Phong Le, Public Health Data Scientist  
