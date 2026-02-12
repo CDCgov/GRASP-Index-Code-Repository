@@ -8,104 +8,68 @@ GRASP leads the application of geospatial science, data, analysis, technology, a
 
 Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to learn more about our work.
 
-# CDC/ATSDR SVI 2022 Open Source R Code
+# Index Open Source Code
 
 **General disclaimer** This repository was created for use by CDC programs to collaborate on public health related projects in support of the CDC mission. GitHub is not hosted by CDC, but is a third-party website used by CDC and its partners to share information and collaborate on software. CDC use of GitHub does not imply endorsement of any service, product, or enterprise.
 
 ## Overview
+The Geospatial Research, Analysis, and Services Program (GRASP) develops and maintains national, place-based indexes that characterize community conditions related to environmental exposures, health outcomes, and social and built environment factors. These indexes are designed to support public health preparedness, planning, and response by identifying geographic areas where populations may be more likely to experience adverse outcomes during hazardous events.
 
-This repository contains code used to create the 2022 Social Vulnerability Index (SVI) for U.S. census tracts and counties. 
+This repository provides the open source code used to calculate GRASP-developed indexes. It is intended to promote transparency, reproducibility, and collaboration across the public health, academic, and data science communities. The codebase includes implementations in R, Python, and supporting geospatial workflows where applicable.
 
-**Authored by**  
-Phong Le, Public Health Data Scientist  
+All indexes follow a consistent methodological framework:
 
-**Reviewers / Contributors**  
-- Phong Le, Public Health Data Scientist  
-- Sarah Rockhill, Geospatial Epidemiologist, srockhill@cdc.gov  
-- Frank Curriero, Geospatial Consultant
-- Ryan Davis, Geospatial Consultant  
-- Elizabeth Pembleton, epembleton@cdc.gov  
+1. Selection of theoretically and empirically grounded indicators
+2. Standardization of indicators across geographic units
+3. Construction of thematic modules
+4. Aggregation into composite index scores
+5. Percentile ranking to support relative comparison across areas
+6. The repository includes the scripts and documentation necessary to reproduce index calculations from publicly available data sources.
 
----
+## Purpose
 
-### CDC/ATSDR Social Vulnerability Index
+GRASP indexes are population-level tools designed to identify communities that may require additional support before, during, or after hazardous events. They inform preparedness planning and resource allocation by translating complex data into comparable geographic measures. These indexes also support spatial analysis of vulnerability, exposure, and health burden, enabling users to examine patterns across regions and populations. Together, they facilitate data-driven decision making at federal, state, and local levels.
 
-Please refer to the link below to learn more about SVI:  
-https://www.atsdr.cdc.gov/place-health/php/svi/index.html
+These indexes do not predict individual-level outcomes. Instead, they provide standardized, geographically comparable measures that describe relative conditions across census-defined areas. The primary geographic unit for most indexes is the U.S. Census Bureau’s geography (e.g., census tracts or ZIP Code Tabulation Areas). Index values are relative within a defined comparison set, such as a state or the United States as a whole. This repository is designed to make index construction fully transparent. All transformation steps, statistical procedures, and ranking methods are explicitly coded and documented.
 
----
+## Data Sources
 
-### Changes in SVI Over Time
+Index calculations rely primarily on nationally available, publicly accessible datasets. Core sources commonly include:
 
-The CDC/ATSDR SVI has changed four times over the years, as shown in the timeline below:  
-https://www.atsdr.cdc.gov/place-health/php/svi/index.html#cdc_generic_section_4-changes-over-time
+1. U.S. Census Bureau American Community Survey (ACS) 5-year estimates: Provides socioeconomic, demographic, housing, and language variables.
+2. CDC surveillance systems and model-based small area estimates: Used for health condition prevalence and related indicators.
+3. Environmental datasets: Including modeled meteorological data, air quality metrics, and land cover characteristics.
+4. Federal geospatial products: Such as the National Land Cover Database and related raster-based land surface measures.
 
----
+Indicators are selected based on data quality, national coverage, reproducibility, conceptual relevance, and routine update cycles. Where necessary, geographic crosswalks are applied to align datasets to a consistent spatial unit.
 
-### SVI Methodology
+## Methodology
 
-Please refer to the SVI documentation linked below, stratified by year:  
-https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html
+Although each index has unique features, the calculation process follows a shared structure.
 
----
+Indicator Selection:
 
-### Census API Key
+Indicators are chosen based on literature review, subject matter expertise, and statistical evaluation. Inclusion criteria typically require that data be available nationwide at a consistent geographic level, conceptually linked to vulnerability or burden, and reproducible over time.
 
-If you plan to run more than 500 API requests per day, you will need your own Census API key.  
-For most users, this is not required.
+Data Processing:
 
-Generate a key here:  
-https://api.census.gov/data/key_signup.html
+Once indicators are selected, data are cleaned and harmonized. This process includes calculating percentages or rates from raw estimates, aligning datasets to consistent geographic units, addressing missing values, and excluding areas where estimates are unstable due to small population sizes. When data originate at differing spatial scales, geographic crosswalks are applied to ensure consistency.
 
----
+Standardization:
 
-### SVI R Code Output Differences
+Indicators are then standardized to allow comparison across geographic areas. In most cases, this is accomplished by calculating percentile ranks across all units in the comparison set. Percentile ranking transforms indicators to a common scale ranging from 0 to 1, where higher values indicate greater relative burden or vulnerability. In specific cases, alternative approaches such as threshold-based flagging may be used to address methodological considerations.
 
-- County-level results match official CDC outputs exactly  
-- Tract-level results may differ minimally (within 0.0002) due to tract definitions used by the Census API
+Thematic Aggregation:
 
----
+Standardized indicators are grouped into conceptual modules representing domains such as socioeconomic conditions, health-related characteristics, environmental exposures, or built environment features. Within each module, indicator percentile ranks are averaged to generate a module score. The module score is then percentile ranked to ensure consistent scaling across domains.
 
-### SVI Calculation Steps
+Indicator percentile ranks are averaged:
 
-1. **E Variables** – Obtain estimates of CDC/ATSDR SVI variables from the Census Bureau  
-2. **EP Variables** – Derive percentages for the 16 CDC SVI variables  
-3. **EPL Variables** – Rank EP variables to obtain percentile rankings  
-4. **SPL Variables** – Sum EPL variables by theme  
-5. **RPL Variables** – Rank theme-specific SPL variables  
-6. **Overall SPL (SPL_THEMES)** – Sum SPL values across all four themes  
-7. **Overall RPL (RPL_THEMES)** – Rank SPL_THEMES (overall SVI ranking)
+The overall index score is constructed by averaging module rankings. Modules are typically weighted equally unless methodological justification supports an alternative approach. 
 
----
+Composite Index Construction:
 
-### How to Run the Code
-
-**Install required packages:**
-```r
-install.packages(c("tidyverse", "tidycensus", "purrr"))
-```
-
-**Set your Census API key (optional):**
-```r
-tidycensus::census_api_key("YOUR_KEY_HERE", install = TRUE)
-```
-
-Then restart R (**Session → Restart R**).
-
-Choose settings in the **User settings** section of the script and run it.
-
----
-
-### Missing Value Convention
-
-The official SVI outputs use `-999` to indicate values that are unavailable or cannot be computed.  
-In this script, `-999` values are treated as missing during ranking.
-
-
-## Citation
-
-CDC/ATSDR Social Vulnerability Index (SVI) 2022 Calculation Code (R). U.S. Department of Health and Human Services, Agency for Toxic Substances and Disease Registry; 2025.
-Available from: https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html
+The resulting composite score is again percentile ranked to produce a final index ranking suitable for mapping and comparative analysis.
 
 ## Standard Notices 
 
