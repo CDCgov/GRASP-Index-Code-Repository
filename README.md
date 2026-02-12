@@ -17,15 +17,6 @@ The Geospatial Research, Analysis, and Services Program (GRASP) develops and mai
 
 This repository provides the open source code used to calculate GRASP-developed indexes. It is intended to promote transparency, reproducibility, and collaboration across the public health, academic, and data science communities. The codebase includes implementations in R, Python, and supporting geospatial workflows where applicable.
 
-All indexes follow a consistent methodological framework:
-
-1. Selection of theoretically and empirically grounded indicators
-2. Standardization of indicators across geographic units
-3. Construction of thematic modules
-4. Aggregation into composite index scores
-5. Percentile ranking to support relative comparison across areas
-6. The repository includes the scripts and documentation necessary to reproduce index calculations from publicly available data sources.
-
 ## Purpose
 
 GRASP indexes are population-level tools designed to identify communities that may require additional support before, during, or after hazardous events. They inform preparedness planning and resource allocation by translating complex data into comparable geographic measures. These indexes also support spatial analysis of vulnerability, exposure, and health burden, enabling users to examine patterns across regions and populations. Together, they facilitate data-driven decision making at federal, state, and local levels.
@@ -47,27 +38,27 @@ Indicators are selected based on data quality, national coverage, reproducibilit
 
 Although each index has unique features, the calculation process follows a shared structure.
 
-Indicator Selection:
+**Indicator Selection:**
 
 Indicators are chosen based on literature review, subject matter expertise, and statistical evaluation. Inclusion criteria typically require that data be available nationwide at a consistent geographic level, conceptually linked to vulnerability or burden, and reproducible over time.
 
-Data Processing:
+**Data Processing:**
 
 Once indicators are selected, data are cleaned and harmonized. This process includes calculating percentages or rates from raw estimates, aligning datasets to consistent geographic units, addressing missing values, and excluding areas where estimates are unstable due to small population sizes. When data originate at differing spatial scales, geographic crosswalks are applied to ensure consistency.
 
-Standardization:
+**Standardization:**
 
 Indicators are then standardized to allow comparison across geographic areas. In most cases, this is accomplished by calculating percentile ranks across all units in the comparison set. Percentile ranking transforms indicators to a common scale ranging from 0 to 1, where higher values indicate greater relative burden or vulnerability. In specific cases, alternative approaches such as threshold-based flagging may be used to address methodological considerations.
 
-Thematic Aggregation:
+**Thematic Aggregation:**
 
 Standardized indicators are grouped into conceptual modules representing domains such as socioeconomic conditions, health-related characteristics, environmental exposures, or built environment features. Within each module, indicator percentile ranks are averaged to generate a module score. The module score is then percentile ranked to ensure consistent scaling across domains.
 
-Indicator percentile ranks are averaged:
+**Indicator percentile ranks are averaged:**
 
 The overall index score is constructed by averaging module rankings. Modules are typically weighted equally unless methodological justification supports an alternative approach. 
 
-Composite Index Construction:
+**Composite Index Construction:**
 
 The resulting composite score is again percentile ranked to produce a final index ranking suitable for mapping and comparative analysis.
 
