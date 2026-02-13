@@ -4,7 +4,7 @@
 
 **Welcome to the Geospatial Research, Analysis, and Services Program (GRASP) Place & Health Code Hub!**
 
-GRASP leads the application of geospatial science, data, analysis, technology, and visualization at the intersection of place and health. We strengthen public health science and practice by examining environmental exposures, infectious and chronic disease, and the built environment. GRASP supports the Centers for Disease Control and Prevention (CDC) and the Agency for Toxic Substances and Disease Research in public health emergency readiness, response, and recovery by providing expertise, guidance, and support.
+GRASP leads the application of geospatial science, data, analysis, technology, and visualization at the intersection of place and health. We strengthen public health science and practice by examining environmental exposures, infectious and chronic disease, and the built environment. GRASP supports the Centers for Disease Control and Prevention (CDC) and the Agency for Toxic Substances and Disease Registry in public health emergency readiness, response, and recovery by providing expertise, guidance, and support.
 
 Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to learn more about our work.
 
@@ -53,11 +53,11 @@ Additional data sources may include:
 
 Although each index focuses on a different topic area, the general approach is similar.
 
-**Indicator Selection:** Indicators are first chosen based review of the literature, existing indices, subject matter expertise, data availability nationwide, and statistical evaluation. Data must be available at the geographic level used in the index and must relate to the concept being measured.
+**Indicator Selection:** Indicators are first chosen based review of the literature, existing indexes, subject matter expertise, data availability nationwide, and statistical evaluation. Data must be available at the geographic level used in the index and must relate to the concept being measured.
 
 **Data Processing:** Once indicators are selected, data are cleaned and harmonized. This process includes calculating percentages or rates from raw estimates, aligning datasets to consistent geographic units, addressing missing values, and excluding areas where estimates are unstable due to small population sizes. 
 
-**Standardization:** Indicator rankings are calculated by ordering values for all geographic areas in the dataset and assigning a percentile rank between 0 and 1. In most cases, 0 represents the lowest observed value and 1 represents the highest. For some indicators measuring protective factors or environmental amenities, the ranking may be inverted so that higher percentile ranks consistently indicate greater vulnerability or burden.
+**Standardization:** Indicator rankings are calculated by ordering values for all geographic areas in the dataset and assigning a percentile rank between 0 and 1. In most cases, 0 represents the lowest observed value and 1 represents the highest. For some indicators measuring protective factors or environmental amenities, the ranking may be inverted so that higher percentile ranks indicate greater vulnerability or burden.
 
 **Thematic Aggregation:** Indicators are grouped into themes or modules. Theme scores are calculated by averaging the percentile-ranked indicators within each theme. Theme scores are then percentile ranked.
 
