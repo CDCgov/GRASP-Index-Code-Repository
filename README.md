@@ -20,11 +20,7 @@ GRASP develops national indexes to help public health officials, planners, and p
 This repository contains the code used to calculate GRASP indexes. The purpose of this repository is to document how the indexes are constructed, provide transparency in methods, and allow users to reproduce the results. All data processing steps, indicator calculations, and ranking procedures are implemented in code. Scripts are written in R, Python, and supporting geospatial workflows. By making this code publicly available, we aim to support reproducibility, enable methodological review, and facilitate community-driven improvements to index construction.
 
 ## What are the GRASP Indexes?
-GRASP indexes are national tools that combine multiple indicators into a single, comparable ranking for each geographic area. Depending on the project, the geographic unit may be a census tract or a ZIP Code Tabulation Area (ZCTA).
-
-Each index ranks areas based on a defined set of indicators. Indicators are grouped into related themes or modules. For each geographic unit, rankings are calculated for individual indicators, for each theme or module, and for the overall index. Percentile ranking values range from 0 to 1, with higher values indicating greater relative burden or vulnerability.
-
-Indexes are population-level tools. They do not determine the likelihood that an individual will experience a specific outcome. Instead, they describe relative conditions across communities.
+GRASP indexes are national tools that combine multiple indicators into a single, comparable ranking for each geographic area. Depending on the project, the geographic unit may be a census tract, county, or a ZIP Code Tabulation Area (ZCTA). Indexes are population-level tools. They do not determine the likelihood that an individual will experience a specific outcome. Instead, they describe relative conditions across communities.
 
 ## How can the indexes be used?
 
@@ -53,13 +49,11 @@ Additional data sources may include:
 6. NOAA and NASA climate and meteorological data
 7. Emergency response and disaster datasets
 
-Indicators are selected based on review of the literature, existing indices, subject matter expertise, data availability nationwide, and statistical evaluation. Data must be available at the geographic level used in the index and must relate to the concept being measured. To be considered for inclusion, indicators must meet defined criteria including accuracy, reliability, analytical soundness, availability at scale, and regular updates to allow for future index iterations.
-
 ## How are the indexes calculated?
 
 Although each index focuses on a different topic area, the general approach is similar.
 
-**Indicator Selection:** Indicators are first chosen based on literature review, subject matter expertise, and statistical evaluation. 
+**Indicator Selection:** Indicators are first chosen based review of the literature, existing indices, subject matter expertise, data availability nationwide, and statistical evaluation. Data must be available at the geographic level used in the index and must relate to the concept being measured.
 
 **Data Processing:** Once indicators are selected, data are cleaned and harmonized. This process includes calculating percentages or rates from raw estimates, aligning datasets to consistent geographic units, addressing missing values, and excluding areas where estimates are unstable due to small population sizes. 
 
