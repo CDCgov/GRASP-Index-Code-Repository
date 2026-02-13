@@ -13,54 +13,61 @@ Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to
 **General disclaimer** This repository was created for use by CDC programs to collaborate on public health related projects in support of the CDC mission. GitHub is not hosted by CDC, but is a third-party website used by CDC and its partners to share information and collaborate on software. CDC use of GitHub does not imply endorsement of any service, product, or enterprise.
 
 ## Overview
-The Geospatial Research, Analysis, and Services Program (GRASP) develops and maintains national, place-based indexes that characterize community conditions related to environmental exposures, health outcomes, and social and built environment factors. These indexes are designed to support public health preparedness, planning, and response by identifying geographic areas where populations may be more likely to experience adverse outcomes during hazardous events.
 
-This repository provides the open source code used to calculate GRASP-developed indexes. It is intended to promote transparency, reproducibility, and collaboration across the public health, academic, and data science communities. The codebase includes implementations in R, Python, and supporting geospatial workflows where applicable.
+Every community must prepare for and respond to hazardous events, whether natural disasters, disease outbreaks, or environmental exposures. The degree to which a community exhibits certain environmental, health, or social conditions may affect that community's ability to prevent human suffering and financial loss in the event of disaster. These factors can be summarized using place-based indexes.
+GRASP develops national indexes to help public health officials, planners, and partners identify and map communities that may need support before, during, and after hazardous events. Each index delivers a single ranking for a defined geographic unit so users can compare areas across a state or across the United States.
 
-## Purpose
+This repository contains the code used to calculate GRASP indexes. The purpose of this repository is to document how the indexes are constructed, provide transparency in methods, and allow users to reproduce the results. All data processing steps, indicator calculations, and ranking procedures are implemented in code. Scripts are written in R, Python, and supporting geospatial workflows. By making this code publicly available, we aim to support reproducibility, enable methodological review, and facilitate community-driven improvements to index construction.
 
-GRASP indexes are population-level tools designed to identify communities that may require additional support before, during, or after hazardous events. They inform preparedness planning and resource allocation by translating complex data into comparable geographic measures. These indexes also support spatial analysis of vulnerability, exposure, and health burden, enabling users to examine patterns across regions and populations. Together, they facilitate data-driven decision making at federal, state, and local levels.
+## What are the GRASP Indexes?
+GRASP indexes are national tools that combine multiple indicators into a single, comparable ranking for each geographic area. Depending on the project, the geographic unit may be a census tract or a ZIP Code Tabulation Area (ZCTA).
 
-These indexes do not predict individual-level outcomes. Instead, they provide standardized, geographically comparable measures that describe relative conditions across census-defined areas. The primary geographic unit for most indexes is the U.S. Census Bureau’s geography (e.g., census tracts or ZIP Code Tabulation Areas). Index values are relative within a defined comparison set, such as a state or the United States as a whole. This repository is designed to make index construction fully transparent. All transformation steps, statistical procedures, and ranking methods are explicitly coded and documented.
+Each index ranks areas based on a defined set of indicators. Indicators are grouped into related themes or modules. For each geographic unit, rankings are calculated for individual indicators, for each theme or module, and for the overall index. Percentile ranking values range from 0 to 1, with higher values indicating greater relative burden or vulnerability.
 
-## Data Sources
+Indexes are population-level tools. They do not determine the likelihood that an individual will experience a specific outcome. Instead, they describe relative conditions across communities.
 
-Index calculations rely primarily on nationally available, publicly accessible datasets. Core sources commonly include:
+## How can the indexes be used?
 
-1. U.S. Census Bureau American Community Survey (ACS) 5-year estimates: Provides socioeconomic, demographic, housing, and language variables.
-2. CDC surveillance systems and model-based small area estimates: Used for health condition prevalence and related indicators.
-3. Environmental datasets: Including modeled meteorological data, air quality metrics, and land cover characteristics.
-4. Federal geospatial products: Such as the National Land Cover Database and related raster-based land surface measures.
+Indexes provide specific, spatially relevant information that can help public health officials and local planners prepare for and respond to hazardous events.
+Indexes can be used to:
 
-Indicators are selected based on data quality, national coverage, reproducibility, conceptual relevance, and routine update cycles. Where necessary, geographic crosswalks are applied to align datasets to a consistent spatial unit.
+1. Assess community need during preparedness planning
+2. Identify and prioritize areas that may require additional attention
+3. Support mapping and spatial analysis
+4. Inform allocation of resources and interventions
+5. Establish meaningful goals and measure progress toward equity
+6. Characterize unique local factors driving vulnerability to inform policy and decision-making
 
-## Methodology
+Because not all populations are equally affected by hazards, knowing where conditions are concentrated can help agencies target resources more effectively and coordinate response activities.
 
-Although each index has unique features, the calculation process follows a shared structure.
+## What data are included?
 
-**Indicator Selection:**
+Indexes rely on nationally available datasets. A primary source for many indicators is the U.S. Census Bureau American Community Survey (ACS) 5-year estimates. These data provide demographic, socioeconomic, housing, and language measures at small-area geographic levels. The code in this repository pulls data from public APIs, including the Census API, to ensure reproducibility and access to the most current data releases.
+Additional data sources may include:
 
-Indicators are chosen based on literature review, subject matter expertise, and statistical evaluation. Inclusion criteria typically require that data be available nationwide at a consistent geographic level, conceptually linked to vulnerability or burden, and reproducible over time.
+1. CDC surveillance systems and model-based health estimates
+2. Environmental monitoring or modeled data
+3. Land cover datasets
+4. Federal geospatial products
+5. EPA air quality and environmental data
+6. NOAA and NASA climate and meteorological data
+7. Emergency response and disaster datasets
 
-**Data Processing:**
+Indicators are selected based on review of the literature, existing indices, subject matter expertise, data availability nationwide, and statistical evaluation. Data must be available at the geographic level used in the index and must relate to the concept being measured. To be considered for inclusion, indicators must meet defined criteria including accuracy, reliability, analytical soundness, availability at scale, and regular updates to allow for future index iterations.
 
-Once indicators are selected, data are cleaned and harmonized. This process includes calculating percentages or rates from raw estimates, aligning datasets to consistent geographic units, addressing missing values, and excluding areas where estimates are unstable due to small population sizes. When data originate at differing spatial scales, geographic crosswalks are applied to ensure consistency.
+## How are the indexes calculated?
 
-**Standardization:**
+Although each index focuses on a different topic area, the general approach is similar.
 
-Indicators are then standardized to allow comparison across geographic areas. In most cases, this is accomplished by calculating percentile ranks across all units in the comparison set. Percentile ranking transforms indicators to a common scale ranging from 0 to 1, where higher values indicate greater relative burden or vulnerability. In specific cases, alternative approaches such as threshold-based flagging may be used to address methodological considerations.
+**Indicator Selection:** Indicators are first chosen based on literature review, subject matter expertise, and statistical evaluation. 
 
-**Thematic Aggregation:**
+**Data Processing:** Once indicators are selected, data are cleaned and harmonized. This process includes calculating percentages or rates from raw estimates, aligning datasets to consistent geographic units, addressing missing values, and excluding areas where estimates are unstable due to small population sizes. 
 
-Standardized indicators are grouped into conceptual modules representing domains such as socioeconomic conditions, health-related characteristics, environmental exposures, or built environment features. Within each module, indicator percentile ranks are averaged to generate a module score. The module score is then percentile ranked to ensure consistent scaling across domains.
+**Standardization:** Indicator rankings are calculated by ordering values for all geographic areas in the dataset and assigning a percentile rank between 0 and 1. In most cases, 0 represents the lowest observed value and 1 represents the highest. For some indicators measuring protective factors or environmental amenities, the ranking may be inverted so that higher percentile ranks consistently indicate greater vulnerability or burden.
 
-**Indicator percentile ranks are averaged:**
+**Thematic Aggregation:** Indicators are grouped into themes or modules. Theme scores are calculated by averaging the percentile-ranked indicators within each theme. Theme scores are then percentile ranked.
 
-The overall index score is constructed by averaging module rankings. Modules are typically weighted equally unless methodological justification supports an alternative approach. 
-
-**Composite Index Construction:**
-
-The resulting composite score is again percentile ranked to produce a final index ranking suitable for mapping and comparative analysis.
+**Composite Index Construction:** The overall index score is calculated by averaging theme or module rankings. Themes are typically weighted equally. The overall score is then percentile ranked to produce the final index ranking.
 
 ## Standard Notices 
 
