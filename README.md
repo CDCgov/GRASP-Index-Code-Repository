@@ -94,8 +94,7 @@ The source code forked from other open source projects will inherit its license.
 ### Privacy Standard Notice
 This repository contains only non-sensitive, publicly available data and
 information. All material and community participation is covered by the
-[Disclaimer](DISCLAIMER.md)
-and [Code of Conduct](code-of-conduct.md).
+[Disclaimer](DISCLAIMER.md).
 For more information about CDC's privacy policy, please visit [http://www.cdc.gov/other/privacy.html](https://www.cdc.gov/other/privacy.html).
 
 ### Contributing Standard Notice
