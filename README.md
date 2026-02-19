@@ -8,60 +8,18 @@ GRASP leads the application of geospatial science, data, analysis, technology, a
 
 Visit the [GRASP homepage](https://www.atsdr.cdc.gov/place-health/index.html) to learn more about our work.
 
-# Index Open Source Code
+# GRASP Index Code Repository
 
 **General disclaimer** This repository was created for use by CDC programs to collaborate on public health related projects in support of the CDC mission. GitHub is not hosted by CDC, but is a third-party website used by CDC and its partners to share information and collaborate on software. CDC use of GitHub does not imply endorsement of any service, product, or enterprise.
 
 ## Overview
 
-Every community must prepare for and respond to hazardous events, whether natural disasters, disease outbreaks, or environmental exposures. The degree to which a community exhibits certain environmental, health, or social conditions may affect that community's ability to prevent human suffering and financial loss in the event of disaster. These factors can be summarized using place-based indexes.
-GRASP develops national indexes to help public health officials, planners, and partners identify and map communities that may need support before, during, and after hazardous events. Each index delivers a single ranking for a defined geographic unit so users can compare areas across a state or across the United States.
+Every community must prepare for and respond to hazardous events, whether natural disasters, disease outbreaks, or environmental exposures. Conditions within a community, including environmental, health, or social factors, may affect that community’s ability to prevent human suffering and financial loss in the event of disaster. These factors can be summarized using place-based indexes. GRASP develops national indexes to help public health officials, planners, and partners identify and map communities that may need support before, during, and after hazardous events. Each index delivers a single ranking for a defined geographic unit so users can compare areas across a state or across the United States.
 
-This repository contains the code used to calculate GRASP indexes. The purpose of this repository is to document how the indexes are constructed, provide transparency in methods, and allow users to reproduce the results. All data processing steps, indicator calculations, and ranking procedures are implemented in code. Scripts are written in R, Python, and supporting geospatial workflows. By making this code publicly available, we aim to support reproducibility, enable methodological review, and facilitate community-driven improvements to index construction.
+This repository contains the code used to calculate and share GRASP indexes. The purpose of this repository is to document how the indexes are constructed, provide transparency in methods, and allow users to reproduce the results. All data processing steps, indicator calculations, and ranking procedures are implemented in code where possible. Scripts are written in R, Python, and supporting geospatial workflows. By making this code publicly available, we aim to support reproducibility, enable methodological review, and empower users to adapt and innovate tools based on our Place & Health Index Portfolio.
 
 ## What are the GRASP Indexes?
-GRASP indexes are national tools that combine multiple indicators into a single, comparable ranking for each geographic area. Depending on the project, the geographic unit may be a census tract, county, or a ZIP Code Tabulation Area (ZCTA). Indexes are population-level tools. They do not determine the likelihood that an individual will experience a specific outcome. Instead, they describe relative conditions across communities.
-
-## How can the indexes be used?
-
-Indexes provide specific, spatially relevant information that can help public health officials and local planners prepare for and respond to hazardous events.
-Indexes can be used to:
-
-1. Assess community need during preparedness planning
-2. Identify and prioritize areas that may require additional attention
-3. Support mapping and spatial analysis
-4. Inform allocation of resources and interventions
-5. Establish meaningful goals and measure progress toward equity
-6. Characterize unique local factors driving vulnerability to inform policy and decision-making
-
-Because not all populations are equally affected by hazards, knowing where conditions are concentrated can help agencies target resources more effectively and coordinate response activities.
-
-## What data are included?
-
-Indexes rely on nationally available datasets. A primary source for many indicators is the U.S. Census Bureau American Community Survey (ACS) 5-year estimates. These data provide demographic, socioeconomic, housing, and language measures at small-area geographic levels. The code in this repository pulls data from public APIs, including the Census API, to ensure reproducibility and access to the most current data releases.
-Additional data sources may include:
-
-1. CDC surveillance systems and model-based health estimates
-2. Environmental monitoring or modeled data
-3. Land cover datasets
-4. Federal geospatial products
-5. EPA air quality and environmental data
-6. NOAA and NASA climate and meteorological data
-7. Emergency response and disaster datasets
-
-## How are the indexes calculated?
-
-Although each index focuses on a different topic area, the general approach is similar.
-
-**Indicator Selection:** Indicators are first chosen based review of the literature, existing indexes, subject matter expertise, data availability nationwide, and statistical evaluation. Data must be available at the geographic level used in the index and must relate to the concept being measured.
-
-**Data Processing:** Once indicators are selected, data are cleaned and harmonized. This process includes calculating percentages or rates from raw estimates, aligning datasets to consistent geographic units, addressing missing values, and excluding areas where estimates are unstable due to small population sizes. 
-
-**Standardization:** Indicator rankings are calculated by ordering values for all geographic areas in the dataset and assigning a percentile rank between 0 and 1. In most cases, 0 represents the lowest observed value and 1 represents the highest. For some indicators measuring protective factors or environmental amenities, the ranking may be inverted so that higher percentile ranks indicate greater vulnerability or burden.
-
-**Thematic Aggregation:** Indicators are grouped into themes or modules. Theme scores are calculated by averaging the percentile-ranked indicators within each theme. Theme scores are then percentile ranked.
-
-**Composite Index Construction:** The overall index score is calculated by averaging theme or module rankings. Themes are typically weighted equally. The overall score is then percentile ranked to produce the final index ranking.
+GRASP indexes are national tools that combine multiple indicators into a single, comparable ranking for each geographic area. Depending on the project, the geographic unit may be a census tract, county, or a ZIP Code Tabulation Area (ZCTA). Indexes are population-level tools. They do not determine the likelihood that an individual will experience a specific outcome. Instead, they describe relative conditions across communities. To learn more about GRASP’s index portfolio, including how indexes can be used, what data are included, and more, visit the CDC/ATSDR Place and Health site.
 
 ## Standard Notices 
 
