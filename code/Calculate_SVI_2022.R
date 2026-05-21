@@ -27,14 +27,12 @@
 # A Census API key is required to pull in data. 
 # A link to generate your own key is below. 
 # https://api.census.gov/data/key_signup.html
-# You will need to paste this API key below.
+# You will need to paste this API key where indicated below.
 # Optional (recommended):
-# Instead of hard coding your API key in this script, you can save it
-# in your R environment using:
-# usethis::edit_r_environ()
-# Then add this line to your ~/.Renviron file:
-# CENSUS_API_KEY=your_key_here
-# Restart R after saving the file.
+# Securely store your API key in your .Renviron file to use across R sessions:
+# tidycensus::census_api_key(census_api_key, install = TRUE)
+# Note, you only have to save your key in your .Renviron file once. You must
+# restart R after saving your key for the first time. 
 
 ## SVI R Code Output Differences ----
 # County level results are exactly the same as official CDC outputs. 
@@ -77,11 +75,8 @@ suppressPackageStartupMessages({
 # Census API key (required moving forward)
 census_api_key <- "YOUR_CENSUS_API_KEY"
 
-# Or, if saved in your R environment (~/.Renviron), use:
+# If you have already saved in your R environment (~/.Renviron), use:
 # census_api_key <- Sys.getenv("CENSUS_API_KEY")
-
-# Register Census API key
-tidycensus::census_api_key(census_api_key, install = FALSE)
 
 geography  <- "county"           # "tract" or "county", this code does not yet support zcta
 rank_scope <- "us"               # "us" or "state"
