@@ -24,10 +24,15 @@
 # https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html
 
 ## Census API Key ----
-# If you plan to run over 500 API requests in a day, you will need to have your own Census API key. 
+# A Census API key is required to pull in data. 
 # A link to generate your own key is below. 
-# However, for most users, having your own Census API key is not necessary. 
 # https://api.census.gov/data/key_signup.html
+# You will need to paste this API key where indicated below.
+# Optional (recommended):
+# Securely store your API key in your .Renviron file to use across R sessions:
+# tidycensus::census_api_key(census_api_key, install = TRUE)
+# Note, you only have to save your key in your .Renviron file once. You must
+# restart R after saving your key for the first time. 
 
 ## SVI R Code Output Differences ----
 # County level results are exactly the same as official CDC outputs. 
@@ -46,10 +51,11 @@
 ## How to run the code ----
 # 1) Install required packages:
 #    install.packages(c("tidyverse", "tidycensus", "purrr"))
-# 2) Set your Census API key (optional):
-#    tidycensus::census_api_key("YOUR_KEY_HERE", install = TRUE)
-#    Then restart R (Session > Restart R).
-# 3) Choose settings in the "User settings" section below and run the script.
+# 2) Obtain a Census API key:
+#    https://api.census.gov/data/key_signup.html
+# 3) Add your Census API key in the "User settings" section below.
+#    (Optional: save it in your R environment instead of hard coding it.)
+# 4) Choose other settings in the "User settings" section and run the script.
 
 # Missing value convention ----
 # The official SVI outputs use -999 to indicate a value is unavailable or not possible to compute.
@@ -62,23 +68,30 @@ suppressPackageStartupMessages({
   library(purrr)
 })
 
+
 # User settings ----
 # Must be exact
 
+# Census API key (required moving forward)
+census_api_key <- "YOUR_CENSUS_API_KEY"
+
+# If you have already saved in your R environment (~/.Renviron), use:
+# census_api_key <- Sys.getenv("CENSUS_API_KEY")
+
 geography  <- "county"           # "tract" or "county", this code does not yet support zcta
-rank_scope <- "us"              # "us" or "state"
-state      <- NULL              # If rank_scope == "state", set ONE state abbreviation (e.g., "IL")
-                                # Refer to this list if needed: https://www.faa.gov/air_traffic/publications/atpubs/cnt_html/appendix_a.html
-write_csv_path <- NULL   # Name and path of output file. Set to NULL to skip writing. 
+rank_scope <- "us"               # "us" or "state"
+state      <- NULL               # If rank_scope == "state", set ONE state abbreviation (e.g., "IL")
+# Refer to this list if needed: https://www.faa.gov/air_traffic/publications/atpubs/cnt_html/appendix_a.html
+write_csv_path <- NULL           # Name and path of output file. Set to NULL to skip writing.
 
 # Main function ----
 svi_2022 <- function(
-  geography  = c("tract", "county"),
-  rank_scope = c("us", "state"),
-  state      = NULL,
-  write_csv_path = NULL
+    geography  = c("tract", "county"),
+    rank_scope = c("us", "state"),
+    state      = NULL,
+    write_csv_path = NULL
 ) {
-
+  
   # Helper Functions ----
   round_half_up <- function(x, digits = 0) {
     m <- 10^digits
@@ -86,21 +99,21 @@ svi_2022 <- function(
     sign_x[sign_x == 0] <- 1
     floor(abs(x) * m + 0.5) / m * sign_x
   }
-
+  
   # EP_* rounding: 1 decimal, half-up 
   ep_round <- function(x) round_half_up(round(x, 6), 1)
-
+  
   # Rank-like rounding: 4 decimals, half-up
   rank_round <- function(x) round_half_up(x, 4)
-
+  
   # Safe ratio: NA when denominator is missing or 0
   safe_ratio <- function(num, den) {
     if_else(is.na(den) | den == 0, NA_real_, num / den)
   }
-
+  
   # Replace NA with -999 for official-style missing encoding
   na_to_neg999 <- function(x) if_else(is.na(x), -999.0, x)
-
+  
   # Percentile rank: (min_rank(x)-1)/(n-1), excluding -999
   pct_rank <- function(x) {
     x2 <- if_else(x == -999, NA_real_, x)
@@ -110,7 +123,7 @@ svi_2022 <- function(
     pr <- rank_round(pr)
     if_else(is.na(x2), -999.0, pr)
   }
-
+  
   # ACS variable list ----
   variables <- c(
     # Totals / denominators
@@ -118,7 +131,7 @@ svi_2022 <- function(
     "DP04_0001",       # Total housing units (E_HU)
     "DP04_0002",       # Occupied housing units (used in crowding notes)
     "DP02_0001",       # Total households (E_HH)
-
+    
     # Theme 1
     "S1701_C01_001",   # Poverty universe
     "S1701_C01_040",   # Persons below 150% poverty (count)
@@ -132,14 +145,14 @@ svi_2022 <- function(
     "S2503_C01_032",
     "S2503_C01_036",
     "S2503_C01_040",
-
+    
     # Theme 2
     "S0101_C02_030",   # Age 65+ (percent)
     "DP05_0019P",      # Age 17 and younger (percent)
     "DP02_0072P",      # Disability (percent)
     "DP02_0007P",      # Single-parent male households (percent)
     "DP02_0011P",      # Single-parent female households (percent)
-
+    
     # Limited English (counts)
     "B16005_001",
     "B16005_007", "B16005_008",
@@ -150,10 +163,10 @@ svi_2022 <- function(
     "B16005_034", "B16005_035",
     "B16005_039", "B16005_040",
     "B16005_044", "B16005_045",
-
+    
     # Theme 3
     "DP05_0079P",      # % White, non-Hispanic
-
+    
     # Theme 4
     "DP04_0012P", "DP04_0013P",  # % 10–19 + % 20+ units
     "DP04_0014P",                # % mobile homes
@@ -161,10 +174,10 @@ svi_2022 <- function(
     "DP04_0058P",                # % no vehicle
     "B26001_001"                 # Group quarters population (count)
   )
-
+  
   # Pull ACS data (long -> wide) ----
   pull_acs_data <- function() {
-
+    
     # States + DC list from tidycensus fips_codes
     all_state_abbr_us <- fips_codes %>%
       distinct(state, state_code) %>%
@@ -174,12 +187,12 @@ svi_2022 <- function(
       arrange(state_code) %>%
       pull(state) %>%
       unique()
-
+    
     # Explicit ranking scope behavior:
     # - US ranking: pull all states + DC
     # - State ranking: pull only the specified state
     requested_states <- if (rank_scope == "state") state else all_state_abbr_us
-
+    
     get_acs_state <- function(st) {
       suppressMessages(
         tidycensus::get_acs(
@@ -192,30 +205,30 @@ svi_2022 <- function(
         )
       )
     }
-
+    
     map_dfr(requested_states, get_acs_state) %>%
       select(GEOID, NAME, variable, estimate) %>%
       pivot_wider(names_from = variable, values_from = estimate) %>%
       rename(LOCATION = NAME)
   }
-
+  
   # Build E_* and EP_* ----
   build_ep <- function(df) {
-
+    
     df_num <- df %>%
       mutate(across(-c(GEOID, LOCATION), as.numeric))
-
+    
     df_num <- df_num %>%
       mutate(
         # Totals / denominators
         E_TOTPOP = S0601_C01_001,
         E_HU     = DP04_0001,
         E_HH     = DP02_0001,
-
+        
         # Theme 1 counts
         E_POV150 = S1701_C01_040,
         E_HBURD = S2503_C01_028 + S2503_C01_032 + S2503_C01_036 + S2503_C01_040,
-
+        
         # Limited English count
         E_LIMENG = rowSums(across(c(
           B16005_007, B16005_008,
@@ -227,7 +240,7 @@ svi_2022 <- function(
           B16005_039, B16005_040,
           B16005_044, B16005_045
         )), na.rm = TRUE),
-
+        
         # Group quarters count
         E_GROUPQ = B26001_001
       ) %>%
@@ -240,7 +253,7 @@ svi_2022 <- function(
                              ep_round(100 * safe_ratio(E_HBURD, S2503_C01_001))),
         EP_NOHSDP  = na_to_neg999(ep_round(S0601_C01_033)),
         EP_UNINSUR = na_to_neg999(ep_round(S2701_C05_001)),
-
+        
         # Theme 2 EP_*
         EP_AGE65   = na_to_neg999(ep_round(S0101_C02_030)),
         EP_AGE17   = na_to_neg999(ep_round(DP05_0019P)),
@@ -248,10 +261,10 @@ svi_2022 <- function(
         EP_SNGPNT  = na_to_neg999(ep_round(DP02_0007P + DP02_0011P)),
         EP_LIMENG  = if_else(is.na(B16005_001) | B16005_001 == 0, -999.0,
                              ep_round(100 * safe_ratio(E_LIMENG, B16005_001))),
-
+        
         # Theme 3 EP_*
         EP_MINRTY  = na_to_neg999(ep_round(100.0 - DP05_0079P)),
-
+        
         # Theme 4 EP_*
         EP_MUNIT   = na_to_neg999(ep_round(DP04_0012P + DP04_0013P)),
         EP_MOBILE  = na_to_neg999(ep_round(DP04_0014P)),
@@ -260,16 +273,16 @@ svi_2022 <- function(
         EP_GROUPQ  = if_else(is.na(E_TOTPOP) | E_TOTPOP == 0, -999.0,
                              ep_round(100 * safe_ratio(E_GROUPQ, E_TOTPOP)))
       )
-
+    
     rank_df     <- df_num %>% filter(!is.na(E_TOTPOP) & E_TOTPOP > 0)
     zero_pop_df <- df_num %>% filter(is.na(E_TOTPOP) | E_TOTPOP == 0)
-
+    
     list(rank_df = rank_df, zero_pop_df = zero_pop_df)
   }
-
+  
   # Ranking ----
   rank_svi <- function(rank_df) {
-
+    
     rank_df <- rank_df %>%
       mutate(
         # Compute percentile ranks for each EP_* into EPL_*
@@ -326,10 +339,10 @@ svi_2022 <- function(
         across(starts_with("SPL_"), ~ if_else(.x == -999, -999.0, rank_round(.x))),
         across(starts_with("RPL_"), ~ if_else(.x == -999, -999.0, rank_round(.x)))
       )
-
+    
     rank_df
   }
-
+  
   # Restore units with 0 population ----
   restore_zero_pop <- function(rank_df, zero_pop_df) {
     rank_cols <- names(rank_df)[grepl("^(EPL_|SPL_|RPL_)", names(rank_df))]
@@ -338,16 +351,16 @@ svi_2022 <- function(
     }
     bind_rows(rank_df, zero_pop_df) %>% arrange(GEOID)
   }
-
+  
   # Run pipeline ----
   census_wide <- pull_acs_data()
   
   built <- build_ep(census_wide)
-
+  
   ranked <- rank_svi(built$rank_df)
   
   svi_out <- restore_zero_pop(ranked, built$zero_pop_df)
-
+  
   svi_out <- svi_out %>%
     select(
       GEOID, LOCATION,
@@ -358,11 +371,11 @@ svi_2022 <- function(
       starts_with("SPL_"),
       starts_with("RPL_")
     )
-
+  
   if (!is.null(write_csv_path) && nzchar(write_csv_path)) {
     write.csv(svi_out, write_csv_path, row.names = FALSE)
   }
-
+  
   svi_out
 }
 
